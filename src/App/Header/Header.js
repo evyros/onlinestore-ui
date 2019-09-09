@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import './Header.scss';
+import CartButton from "./CartButton/CartButton";
 
 class Header extends React.Component {
 
@@ -19,6 +20,7 @@ class Header extends React.Component {
 					<li><Link to="/profile">Profile</Link></li>
 					<li><Link to="/cart">Cart</Link></li>
 				</ul>
+				<CartButton />
 			</header>
 		);
 	}
