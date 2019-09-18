@@ -1,19 +1,30 @@
 import React from 'react';
 import './Products.scss';
 import {ErrorMessage, Field, Form, Formik} from "formik";
-import User from "../../models/user";
+import Product from "../../models/product";
+import CategoryService from '../../services/category.service';
 
 class Products extends React.Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
+			categories: [],
 			submitting: false
 		};
 	}
 
-	send() {
+	componentDidMount() {
+		CategoryService
+			.getAll()
+			.then(res => res.json())
+			.then(categories => {
+				this.setState({categories});
+			});
+	}
 
+	send(values) {
+		console.log(values);
 	}
 
 	render() {
@@ -22,7 +33,7 @@ class Products extends React.Component {
 				<h1>Products</h1>
 				<Formik
 					initialValues={{title: '', categoryId: '', price: '', image: ''}}
-					validationSchema={User}
+					validationSchema={Product}
 					onSubmit={this.send.bind(this)}>
 					<Form className="col-sm-6">
 						<div className="form-group">
@@ -32,12 +43,17 @@ class Products extends React.Component {
 						<div className="form-group">
 							<label>Category:</label>
 							<Field name="categoryId" component="select" className="form-control">
-								<option value="Dw">bla</option>
+								<option defaultValue>Choose category</option>
+								{this.state.categories.map((category, index) => {
+									return <option key={index} value={category.id}>
+										{category.name}
+									</option>
+								})}
 							</Field>
 						</div>
 						<div className="form-group">
 							<label>Price:</label>
-							<Field name="price" type="text" className="form-control" />
+							<Field name="price" type="number" className="form-control" />
 						</div>
 						<div className="form-group">
 							<label>Image:</label>
