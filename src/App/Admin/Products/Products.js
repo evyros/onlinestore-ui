@@ -3,6 +3,7 @@ import './Products.scss';
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import Product from "../../models/product";
 import CategoryService from '../../services/category.service';
+import ProductService from '../../services/product.service';
 
 class Products extends React.Component {
 
@@ -24,7 +25,7 @@ class Products extends React.Component {
 	}
 
 	send(values) {
-		console.log(values);
+		ProductService.create(values);
 	}
 
 	render() {
@@ -43,7 +44,7 @@ class Products extends React.Component {
 						<div className="form-group">
 							<label>Category:</label>
 							<Field name="categoryId" component="select" className="form-control">
-								<option defaultValue>Choose category</option>
+								<option selected disabled value="">Choose category</option>
 								{this.state.categories.map((category, index) => {
 									return <option key={index} value={category.id}>
 										{category.name}
