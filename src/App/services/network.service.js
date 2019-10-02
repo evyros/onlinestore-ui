@@ -1,13 +1,16 @@
 import cookie from 'react-cookies';
 
+const baseUrl = 'http://localhost:4000/api';
+
 export default class Network {
 
 	getHeaders(customHeaders) {
-		let headers = customHeaders || {
-			'Content-Type': 'application/json'
-		};
+		let headers = {};
 		if(this.getToken()) {
 			headers.Authorization = this.getToken();
+		}
+		for(let prop in customHeaders) {
+			headers[prop] = customHeaders[prop];
 		}
 		return headers;
 	}
@@ -16,11 +19,21 @@ export default class Network {
 		return cookie.load('user');
 	}
 
-	send(method, url, data, headers) {
-		return fetch('http://localhost:4000/api' + url, {
+	send(method, url, data) {
+		return fetch(baseUrl + url, {
 			method: method,
 			body: JSON.stringify(data),
-			headers: this.getHeaders(headers)
+			headers: this.getHeaders({
+				'Content-Type': 'application/json'
+			})
+		});
+	}
+
+	sendMultipart(method, url, data) {
+		return fetch(baseUrl + url, {
+			method: method,
+			body: data,
+			headers: this.getHeaders()
 		});
 	}
 }
