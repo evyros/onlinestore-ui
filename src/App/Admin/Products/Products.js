@@ -25,8 +25,9 @@ class Products extends React.Component {
 	}
 
 	send(values) {
-		console.log(values);
-		ProductService.create(values);
+		this.setState({submitting: true});
+		ProductService.create(values)
+			.then(() => this.setState({submitting: false}));
 	}
 
 	render() {
