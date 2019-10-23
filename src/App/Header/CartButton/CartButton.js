@@ -1,20 +1,22 @@
 import React from 'react';
 import './CartButton.scss';
-import CartService from '../../services/cart.service';
+import { connect } from 'react-redux';
 
 class CartButton extends React.Component {
-
-	productCount(){
-		return CartService.getAll().length;
-	}
 
 	render() {
 		return (
 			<div className="CartButton badge badge-light">
-				Cart: {this.productCount()}
+				Cart: {this.props.itemCount}
 			</div>
 		);
 	}
 }
 
-export default CartButton;
+const mapStateToProps = (state) => {
+	return {
+		itemCount: state.cartItemsCount
+	};
+};
+
+export default connect(mapStateToProps)(CartButton);

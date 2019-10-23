@@ -1,7 +1,8 @@
 import React from 'react';
 import ProductService from '../../services/product.service';
-import CartService from '../../services/cart.service';
 import './Product.scss';
+import { connect } from 'react-redux';
+import { addToCart } from '../../redux/actions';
 
 class Product extends React.Component {
 
@@ -19,7 +20,7 @@ class Product extends React.Component {
 	}
 
 	addToCart() {
-		CartService.add(this.state.product.id, 1);
+		this.props.addToCart(this.state.product.id);
 	}
 
 	render() {
@@ -38,4 +39,6 @@ class Product extends React.Component {
 	}
 }
 
-export default Product;
+export default connect(null, {
+	addToCart
+})(Product);

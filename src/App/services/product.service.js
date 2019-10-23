@@ -10,6 +10,10 @@ class ProductService extends Network {
 		return this.sendMultipart('PUT', '/product', data);
 	}
 
+	getAll() {
+		return this.send('GET', '/product');
+	}
+
 	getByCategoryId(categoryId) {
 		return this.send('GET', `/category/${categoryId}/product`);
 	}

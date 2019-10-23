@@ -1,83 +1,56 @@
-import React from 'react';
+import React from "react";
 import './Products.scss';
-import {ErrorMessage, Field, Form, Formik} from "formik";
-import Product from "../../models/product";
-import CategoryService from '../../services/category.service';
-import ProductService from '../../services/product.service';
+import productService from '../../services/product.service';
+import { Link } from 'react-router-dom';
 
 class Products extends React.Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			categories: [],
-			submitting: false
+			products: []
 		};
 	}
 
 	componentDidMount() {
-		CategoryService
-			.getAll()
+		productService.getAll()
 			.then(res => res.json())
-			.then(categories => {
-				this.setState({categories});
-			});
-	}
-
-	send(values) {
-		this.setState({submitting: true});
-		ProductService.create(values)
-			.then(() => this.setState({submitting: false}));
+			.then(products => this.setState({products}))
 	}
 
 	render() {
-		return (
-			<div>
-				<h1>Products</h1>
-				<Formik
-					initialValues={{title: '', categoryId: '', price: '', image: ''}}
-					validationSchema={Product}
-					onSubmit={this.send.bind(this)}
-					render={({setFieldValue}) => {
-						return <Form className="col-sm-6">
-							<div className="form-group">
-								<label>Title:</label>
-								<Field name="title" type="text" className="form-control" />
-							</div>
-							<div className="form-group">
-								<label>Category:</label>
-								<Field name="categoryId" component="select" className="form-control">
-									<option disabled value="">Choose category</option>
-									{this.state.categories.map((category, index) => {
-										return <option key={index} value={category.id}>
-											{category.name}
-										</option>
-									})}
-								</Field>
-							</div>
-							<div className="form-group">
-								<label>Price:</label>
-								<Field name="price" type="number" className="form-control" />
-							</div>
-							<div className="form-group">
-								<label>Image:</label>
-								<input name="image" type="file" onChange={(event) => {
-									setFieldValue('image', event.currentTarget.files[0]);
-								}} />
-							</div>
-							<div className="form-group">
-								<input type="submit"
-								       value="Submit"
-								       className="btn btn-primary"
-								       disabled={this.state.submitting} />
-							</div>
-						</Form>;
-					}}>
-
-				</Formik>
+		return <div>
+			<h2>Products</h2>
+			<div className="d-flex justify-content-end mb-3">
+				<Link to="/admin/products/create" className="btn btn-primary">Create product</Link>
 			</div>
-		);
+			<table className="table table-striped">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Title</th>
+						<th>Price</th>
+						<th>Options</th>
+					</tr>
+				</thead>
+				<tbody>
+					{this.state.products.map(product => {
+						return <tr key={product.id}>
+							<td>{product.id.substring(product.id.length - 6)}</td>
+							<td>
+								<img className="product-image"
+								     src={'http://localhost:4000/products/' + product.image} />
+								{product.title}
+							</td>
+							<td>${product.price.toFixed(2)}</td>
+							<td> </td>
+						</tr>;
+					})}
+				</tbody>
+			</table>
+		</div>;
 	}
+
 }
 
 export default Products;

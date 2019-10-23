@@ -3,6 +3,7 @@ import './Admin.scss';
 import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import Products from "./Products/Products";
 import UserService from "../services/user.service";
+import CreateProduct from "./Products/CreateProduct/CreateProduct";
 
 class Admin extends React.Component {
 
@@ -40,7 +41,8 @@ class Admin extends React.Component {
 							</ul>
 						</div>
 						<div className="col-sm-9">
-							<Route path="/admin/products" component={Products} />
+							<Route path="/admin/products" exact component={Products} />
+							<Route path="/admin/products/create" component={CreateProduct} />
 						</div>
 					</div>
 				</div>

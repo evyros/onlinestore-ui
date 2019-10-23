@@ -1,13 +1,17 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import './Header.scss';
 import CartButton from "./CartButton/CartButton";
+import './Header.scss';
+import cookie from 'react-cookies';
 
 class Header extends React.Component {
 
 	constructor(props) {
 		super(props);
+	}
 
+	logout() {
+		cookie.remove('user');
 	}
 
 	render() {
@@ -21,6 +25,7 @@ class Header extends React.Component {
 					<li><Link to="/cart">Cart</Link></li>
 				</ul>
 				<CartButton />
+				<button onClick={this.logout.bind(this)}>Logout</button>
 			</header>
 		);
 	}
